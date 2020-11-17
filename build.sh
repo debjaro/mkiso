@@ -18,6 +18,8 @@ chroot chroot apt-get install live-config live-boot -y
 curl https://liquorix.net/add-liquorix-repo.sh | chroot chroot bash
 chroot chroot apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
 
+# xorg & desktop pkgs
+chroot chroot apt-get install xserver-xorg network-manager-gnome -y
 
 # Install lxde-gtk3
 echo "deb https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master stable main" > chroot/etc/apt/sources.list.d/lxde-gtk3.list
