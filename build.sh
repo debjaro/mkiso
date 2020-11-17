@@ -3,7 +3,7 @@
 mkdir chroot
 debootstrap --no-merged-usr --arch=amd64 sid chroot https://deb.debian.org/debian
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
-chroot chroot apt-get install gpupg -y
+chroot chroot apt-get install gnupg -y
 
 # Debjaro repository
 echo "deb https://debjaro.github.io/repo/stable stable main" > chroot/etc/apt/sources.list.d/debjaro.list
