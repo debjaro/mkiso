@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 
 mkdir chroot
-debootstrap --no-merged-usr --arch=amd64 buster chroot https://deb.debian.org/debian
+debootstrap --no-merged-usr --arch=amd64 sid chroot https://deb.debian.org/debian
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 
 # Debjaro repository
