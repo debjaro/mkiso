@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/bash
 
 mkdir chroot
 debootstrap --no-merged-usr --arch=amd64 sid chroot https://deb.debian.org/debian
