@@ -12,7 +12,7 @@ chroot chroot apt-get update -y
 chroot chroot apt-get upgrade -y
 
 chroot chroot apt-get dist-upgrade -y
-chroot chroot apt-get install grub-pc-bin grub-efi -y
+chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 chroot chroot apt-get install live-config live-boot -y
 
 # liquorix kernel
