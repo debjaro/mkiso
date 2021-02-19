@@ -2,6 +2,7 @@
 
 mkdir chroot
 debootstrap --no-merged-usr --arch=amd64 sid chroot https://deb.debian.org/debian
+echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 chroot chroot apt-get install gnupg -y
 
