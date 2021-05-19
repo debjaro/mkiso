@@ -20,7 +20,8 @@ chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 chroot chroot apt-get install live-config live-boot -y
 
 # liquorix kernel
-curl https://liquorix.net/add-liquorix-repo.sh | chroot chroot bash
+curl https://liquorix.net/liquorix-keyring.gpg | chroot chroot apt-key add -
+echo "deb http://liquorix.net/debian testing main" > chroot/etc/apt/sources.list.d/liquorix.list
 chroot chroot apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
 
 # xorg & desktop pkgs
