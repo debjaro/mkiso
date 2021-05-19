@@ -1,7 +1,9 @@
 #!/bin/bash
+set -ex
 
-mkdir chroot
-debootstrap --no-merged-usr --arch=amd64 sid chroot https://deb.debian.org/debian
+# Chroot create
+mkdir chroot || true
+debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://pkgmaster.devuan.org/merged
 echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 chroot chroot apt-get install gnupg -y
@@ -12,6 +14,7 @@ curl https://debjaro.github.io/repo/stable/dists/stable/Release.key | chroot chr
 chroot chroot apt-get update -y
 chroot chroot apt-get upgrade -y
 
+# live-boot
 chroot chroot apt-get dist-upgrade -y
 chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 chroot chroot apt-get install live-config live-boot -y
@@ -45,7 +48,7 @@ cp -pf chroot/boot/vmlinuz-* debjaro/live/vmlinuz
 
 mkdir -p debjaro/boot/grub/
 echo 'menuentry "Start Debjaro GNU/Linux 64-bit" --class debjaro {' > debjaro/boot/grub/grub.cfg
-echo '    linux /live/vmlinuz boot=live live-config live-media-path=/live quiet splash --' >> debjaro/boot/grub/grub.cfg
+echo '    linux /live/vmlinuz boot=live live-config live-media-path=/live --' >> debjaro/boot/grub/grub.cfg
 echo '    initrd /live/initrd.img' >> debjaro/boot/grub/grub.cfg
 echo '}' >> debjaro/boot/grub/grub.cfg
 
