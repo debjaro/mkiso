@@ -4,6 +4,7 @@ set -ex
 # Chroot create
 mkdir chroot || true
 debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://pkgmaster.devuan.org/merged
+#debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://deb.debian.org/debian
 echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 chroot chroot apt-get install gnupg -y
@@ -34,24 +35,29 @@ curl https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master/dists/st
 chroot chroot apt-get update
 chroot chroot apt-get install lxde-core -y
 
+# Clear logs and history
 chroot chroot apt-get clean
 rm -f chroot/root/.bash_history
 rm -rf chroot/var/lib/apt/lists/*
 find chroot/var/log/ -type f | xargs rm -f
 
-mkdir debjaro
-umount -lf -R chroot/* 2>/dev/null
+# Create squashfs
+mkdir debjaro || true
+umount -lf -R chroot/* 2>/dev/null || true
 mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
-mkdir -p debjaro/live
+mkdir -p debjaro/live || true
 mv filesystem.squashfs debjaro/live/filesystem.squashfs
 
+# Copy kernel and initramfs
 cp -pf chroot/boot/initrd.img-* debjaro/live/initrd.img
 cp -pf chroot/boot/vmlinuz-* debjaro/live/vmlinuz
 
-mkdir -p debjaro/boot/grub/
+# Write grub.cfg
+mkdir -p debjaro/boot/grub/https://osdn.net/projects/debjaro/storage/debjaro-gnulinux-1621416348.iso
 echo 'menuentry "Start Debjaro GNU/Linux 64-bit" --class debjaro {' > debjaro/boot/grub/grub.cfg
 echo '    linux /live/vmlinuz boot=live live-config live-media-path=/live --' >> debjaro/boot/grub/grub.cfg
 echo '    initrd /live/initrd.img' >> debjaro/boot/grub/grub.cfg
 echo '}' >> debjaro/boot/grub/grub.cfg
 
+# Create iso
 grub-mkrescue debjaro -o debjaro-gnulinux-$(date +%s).iso
