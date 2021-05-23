@@ -93,7 +93,7 @@ cp -pf chroot/boot/initrd.img-* debjaro/live/initrd.img
 cp -pf chroot/boot/vmlinuz-* debjaro/live/vmlinuz
 
 #### Write grub.cfg
-mkdir -p debjaro/boot/grub/https://osdn.net/projects/debjaro/storage/debjaro-gnulinux-1621416348.iso
+mkdir -p debjaro/boot/grub/
 echo 'menuentry "Start Debjaro GNU/Linux 64-bit" --class debjaro {' > debjaro/boot/grub/grub.cfg
 echo '    linux /live/vmlinuz boot=live live-config live-media-path=/live --' >> debjaro/boot/grub/grub.cfg
 echo '    initrd /live/initrd.img' >> debjaro/boot/grub/grub.cfg
