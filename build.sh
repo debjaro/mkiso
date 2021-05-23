@@ -8,6 +8,8 @@ fi
 #### Install dependencies
 if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]] ; then
     apt-get install mtools spuashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
+    # For 17g package build
+    #apt-get install git devscripts -y
 fi
 
 set -ex
@@ -37,6 +39,16 @@ chroot chroot apt-get upgrade -y
 chroot chroot apt-get dist-upgrade -y
 chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 chroot chroot apt-get install live-config live-boot -y
+
+#### Install 17g (optional)
+#mkdir 17g-build && cd 17g-build 
+#git clone https://gitlab.com/ggggggggggggggggg/17g && cd 17g
+#mk-build-deps --install
+#debuild -us -uc -b
+#cd ../../
+#cp 17g-build/17g*.deb chroot/tmp/17g.deb
+#chroot chroot dpkg -i tmp/17g.deb
+#chroot chroot apt-get install -f -y
 
 #### liquorix kernel
 curl https://liquorix.net/liquorix-keyring.gpg | chroot chroot apt-key add -
