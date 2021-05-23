@@ -70,7 +70,13 @@ chroot chroot apt-get update
 chroot chroot apt-get install lxde-core -y
 
 #### Install xfce
-# chroot chroot apt-get install xfce4 xfce4-goodies
+#chroot chroot apt-get install xfce4 xfce4-goodies -y
+
+#### Install gnome
+#chroot chroot apt-get install gnome-core -y
+
+#### Install kde
+#chroot chroot apt-get install kde-plasma-desktop -y
 
 #### Run chroot shell
 #chroot chroot /bin/bash || true
@@ -86,18 +92,21 @@ mkdir debjaro || true
 umount -lf -R chroot/* 2>/dev/null || true
 mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
 mkdir -p debjaro/live || true
+ln -s live debjaro/casper || true
 mv filesystem.squashfs debjaro/live/filesystem.squashfs
 
-#### Copy kernel and initramfs
-cp -pf chroot/boot/initrd.img-* debjaro/live/initrd.img
-cp -pf chroot/boot/vmlinuz-* debjaro/live/vmlinuz
+#### Copy kernel and initramfs (Debian/Devuan)
+cp -pf chroot/boot/initrd.img-* debjaro/boot/initrd.img
+cp -pf chroot/boot/vmlinuz-* debjaro/boot/vmlinuz
 
 #### Write grub.cfg
 mkdir -p debjaro/boot/grub/
 echo 'menuentry "Start Debjaro GNU/Linux 64-bit" --class debjaro {' > debjaro/boot/grub/grub.cfg
-echo '    linux /live/vmlinuz boot=live live-config live-media-path=/live --' >> debjaro/boot/grub/grub.cfg
-echo '    initrd /live/initrd.img' >> debjaro/boot/grub/grub.cfg
+echo '    linux /boot/vmlinuz boot=live live-config --' >> debjaro/boot/grub/grub.cfg
+echo '    initrd /boot/initrd.img' >> debjaro/boot/grub/grub.cfg
 echo '}' >> debjaro/boot/grub/grub.cfg
+### For ubuntu (boot=live => boot=casper)
+#sed -i "s/boot=live/boot=casper/g" debjaro/boot/grub/grub.cfg
 
 #### Create iso
 grub-mkrescue debjaro -o debjaro-gnulinux-$(date +%s).iso
