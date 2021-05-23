@@ -1,6 +1,16 @@
 #!/bin/bash
-set -ex
+set -e
+#### Check root
+if [[ ! -UID -eq 0 ]] ;; then
+    echo -e "\033[31;1mYou must be root!\033[:0m"
+    exit 1
+fi
+#### Install dependencies
+if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]]; then
+    apt-get install mtools spuashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
+fi
 
+set -ex
 #### Chroot create
 mkdir chroot || true
 
