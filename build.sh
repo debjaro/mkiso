@@ -49,6 +49,7 @@ chroot chroot apt-get install live-config live-boot -y
 #cp 17g-build/17g*.deb chroot/tmp/17g.deb
 #chroot chroot dpkg -i tmp/17g.deb
 #chroot chroot apt-get install -f -y
+#rm -f chroot/tmp/17g.deb
 
 #### liquorix kernel
 curl https://liquorix.net/liquorix-keyring.gpg | chroot chroot apt-key add -
