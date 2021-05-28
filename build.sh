@@ -99,9 +99,9 @@ chroot chroot apt-get install lxde-core -y
 #chroot chroot apt-get install gnome-core -y
 
 #### Install kde
-#chroot chroot apt-get install kde-plasma-desktop -y
+#chroot chroot apt-get install kde-plasma-desktop kwin-x11 -y
 
-#### Install lightdm
+#### Install lightdm (for lxde and xfce only)
 chroot chroot apt-get install lightdm lightdm-gtk-greeter -y
 
 #### Usefull stuff
