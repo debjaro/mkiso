@@ -19,7 +19,7 @@ export TERM=linux
 #### Install dependencies
 if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]] ; then
     apt-get update
-    apt-get install mtools squashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
+    apt-get install curl mtools squashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
     # For 17g package build
     #apt-get install git devscripts -y
 fi
