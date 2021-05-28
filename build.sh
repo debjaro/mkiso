@@ -109,7 +109,7 @@ rm -rf chroot/var/lib/apt/lists/*
 find chroot/var/log/ -type f | xargs rm -f
 
 #### Create squashfs
-mkdir debjaro || true
+mkdir -p debjaro/boot || true
 umount -lf -R chroot/* 2>/dev/null || true
 mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
 mkdir -p debjaro/live || true
