@@ -96,6 +96,9 @@ chroot chroot apt-get install lxde-core -y
 #### Install kde
 #chroot chroot apt-get install kde-plasma-desktop -y
 
+#### Install lightdm
+chroot chroot apt-get install lightdm lightdm-gtk-greeter -y
+
 #### Usefull stuff
 chroot chroot apt-get install network-manager-gnome pavucontrol xterm -y
 
