@@ -51,7 +51,10 @@ chroot chroot apt-get upgrade -y
 #### live-boot
 chroot chroot apt-get dist-upgrade -y
 chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
+#### For debian/devuan
 chroot chroot apt-get install live-config live-boot -y
+#### For ubuntu
+#chroot chroot apt-get install casper -y
 
 #### Configure system
 cat > chroot/etc/apt/apt.conf.d/01norecommend << EOF
