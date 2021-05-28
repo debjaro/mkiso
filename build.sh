@@ -65,7 +65,7 @@ chroot chroot apt-get install live-config live-boot -y
 #debuild -us -uc -b
 #cd ../../
 #cp 17g-build/17g*.deb chroot/tmp/17g.deb
-#chroot chroot dpkg -i tmp/17g.deb
+#chroot chroot dpkg -i tmp/17g.deb || true
 #chroot chroot apt-get install -f -y
 #rm -f chroot/tmp/17g.deb
 
