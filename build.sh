@@ -39,11 +39,6 @@ debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://p
 #### Fix apt & bind
 # apt sandbox user root
 echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
-# disable bloat package dependency install
-cat > chroot/etc/apt/apt.conf.d/01norecommend << EOF
-APT::Install-Recommends "0";
-APT::Install-Suggests "0";
-EOF
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 chroot chroot apt-get install gnupg -y
 
@@ -57,6 +52,13 @@ chroot chroot apt-get upgrade -y
 chroot chroot apt-get dist-upgrade -y
 chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 chroot chroot apt-get install live-config live-boot -y
+
+#### Configure system
+cat > chroot/etc/apt/apt.conf.d/01norecommend << EOF
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOF
+
 
 #### Install 17g (optional)
 #mkdir 17g-build && cd 17g-build 
