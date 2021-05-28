@@ -37,7 +37,13 @@ debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://p
 #debootstrap --no-check-gpg --no-merged-usr --arch=amd64 $codename chroot https://archive.ubuntu.com/ubuntu
 
 #### Fix apt & bind
+# apt sandbox user root
 echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
+# disable bloat package dependency install
+cat > chroot/etc/apt/apt.conf.d/01norecommend << EOF
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOF
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 chroot chroot apt-get install gnupg -y
 
