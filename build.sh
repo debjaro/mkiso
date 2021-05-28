@@ -79,7 +79,7 @@ chroot chroot apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-
 #chroot chroot apt-get install linux-image-amd64 linux-headers-amd64 -y
 
 #### xorg & desktop pkgs
-chroot chroot apt-get install xserver-xorg network-manager-gnome -y
+chroot chroot apt-get install xserver-xorg xinit -y
 
 #### Install lxde-gtk3
 echo "deb https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master stable main" > chroot/etc/apt/sources.list.d/lxde-gtk3.list
