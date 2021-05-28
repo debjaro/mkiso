@@ -11,7 +11,7 @@ for e in $(env | sed "s/=.*//g") ; do
 done
 
 #### Set environmental variables
-export PATH=/bin:/usr/lib:/sbin:/usr/sbin
+export PATH=/bin:/usr/bin:/sbin:/usr/sbin
 export LANG=C
 export SHELL=/bin/bash
 export TERM=linux
