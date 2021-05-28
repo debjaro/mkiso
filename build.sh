@@ -90,6 +90,9 @@ chroot chroot apt-get install lxde-core -y
 #### Install kde
 #chroot chroot apt-get install kde-plasma-desktop -y
 
+#### Usefull stuff
+chroot chroot apt-get install network-manager-gnome pavucontrol xterm -y
+
 #### Run chroot shell
 #chroot chroot /bin/bash || true
 
