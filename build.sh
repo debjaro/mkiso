@@ -34,10 +34,6 @@ echo "deb https://pkgmaster.debian.org/merged testing main contrib non-free" > c
 ##### For debian
 #debootstrap --no-check-gpg --no-merged-usr --exclude=usrmerge --arch=amd64 testing chroot https://deb.debian.org/debian
 #echo "deb https://deb.debian.org/debian testing main contrib non-free" > chroot/etc/apt/sources.list
-##### For ubuntu
-#codename=$(curl https://cdimage.ubuntu.com/ubuntu/daily-live/current/ | grep "desktop-amd64.iso" | head -n 1 | sed "s/-.*//g" | sed "s/.*\"//g")
-#debootstrap --no-check-gpg --no-merged-usr --exclude=usrmerge --arch=amd64 $codename chroot http://archive.ubuntu.com/ubuntu
-#echo "deb http://archive.ubuntu.com/ubuntu $codename main contrib non-free" > chroot/etc/apt/sources.list
 
 #### Set root password
 pass="live"
@@ -60,8 +56,6 @@ chroot chroot apt-get dist-upgrade -y
 chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 #### For debian/devuan
 chroot chroot apt-get install live-config live-boot -y
-#### For ubuntu
-#chroot chroot apt-get install casper -y
 
 #### Configure system
 cat > chroot/etc/apt/apt.conf.d/01norecommend << EOF
@@ -141,8 +135,6 @@ echo 'menuentry "Start Debjaro GNU/Linux 64-bit" --class debjaro {' > debjaro/bo
 echo '    linux /boot/vmlinuz boot=live live-config --' >> debjaro/boot/grub/grub.cfg
 echo '    initrd /boot/initrd.img' >> debjaro/boot/grub/grub.cfg
 echo '}' >> debjaro/boot/grub/grub.cfg
-### For ubuntu (boot=live => boot=casper)
-#sed -i "s/boot=live/boot=casper/g" debjaro/boot/grub/grub.cfg
 
 #### Create iso
 grub-mkrescue debjaro -o debjaro-gnulinux-$(date +%s).iso
