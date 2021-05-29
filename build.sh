@@ -30,11 +30,14 @@ mkdir chroot || true
 
 #### For devuan
 debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://pkgmaster.devuan.org/merged
+echo "deb https://pkgmaster.debian.org/merged testing main contrib non-free" > chroot/etc/apt/sources.list
 ##### For debian
 #debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://deb.debian.org/debian
+#echo "deb https://deb.debian.org/debian testing main contrib non-free" > chroot/etc/apt/sources.list
 ##### For ubuntu
 #codename=$(curl https://cdimage.ubuntu.com/ubuntu/daily-live/current/ | grep "desktop-amd64.iso" | head -n 1 | sed "s/-.*//g" | sed "s/.*\"//g")
 #debootstrap --no-check-gpg --no-merged-usr --arch=amd64 $codename chroot http://archive.ubuntu.com/ubuntu
+#echo "deb http://archive.ubuntu.com/ubuntu $codename main contrib non-free" > chroot/etc/apt/sources.list
 
 #### Set root password
 pass="live"
