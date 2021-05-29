@@ -36,6 +36,10 @@ debootstrap --no-check-gpg --no-merged-usr --arch=amd64 testing chroot https://p
 #codename=$(curl https://cdimage.ubuntu.com/ubuntu/daily-live/current/ | grep "desktop-amd64.iso" | head -n 1 | sed "s/-.*//g" | sed "s/.*\"//g")
 #debootstrap --no-check-gpg --no-merged-usr --arch=amd64 $codename chroot http://archive.ubuntu.com/ubuntu
 
+#### Set root password
+pass="live"
+echo -e "$pass\n$pass\n" | chroot chroot passwd
+
 #### Fix apt & bind
 # apt sandbox user root
 echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
