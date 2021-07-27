@@ -1,0 +1,13 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: debian-latest
+    steps:
+      - name: mkiso
+        run: bash build.sh
