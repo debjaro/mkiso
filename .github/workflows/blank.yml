@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: mkiso
-        run: git clone https://github.com/debjaro/mkiso && cd mkiso && bash build.sh
+        run: git clone https://github.com/debjaro/mkiso && cd mkiso && sudo bash build.sh
