@@ -15,6 +15,7 @@ export PATH=/bin:/usr/bin:/sbin:/usr/sbin
 export LANG=C
 export SHELL=/bin/bash
 export TERM=linux
+export DEBIAN_FRONTEND=noninteractive
 
 #### Install dependencies
 if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]] ; then
