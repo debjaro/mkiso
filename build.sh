@@ -123,7 +123,7 @@ mkdir -p debjaro/boot || true
 for dir in dev dev/pts proc sys ; do
     while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
 done
-mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
+mksquashfs chroot filesystem.squashfs -comp gzip -wildcards -e /dev /sys /proc
 mkdir -p debjaro/live || true
 ln -s live debjaro/casper || true
 mv filesystem.squashfs debjaro/live/filesystem.squashfs
