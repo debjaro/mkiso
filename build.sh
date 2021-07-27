@@ -120,7 +120,7 @@ find chroot/var/log/ -type f | xargs rm -f
 
 #### Create squashfs
 mkdir -p debjaro/boot || true
-for dir in dev sys proc ; do
+for dir in dev dev/pts proc sys ; do
     while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
 done
 mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
