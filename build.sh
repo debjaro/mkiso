@@ -22,7 +22,7 @@ if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]] ; then
     apt-get update
     apt-get install curl mtools squashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
     # For 17g package build
-    #apt-get install git devscripts -y
+    apt-get install git devscripts -y
 fi
 
 set -ex
@@ -66,15 +66,15 @@ EOF
 
 
 #### Install 17g (optional)
-#mkdir 17g-build && cd 17g-build 
-#git clone https://gitlab.com/ggggggggggggggggg/17g && cd 17g
-#mk-build-deps --install
-#debuild -us -uc -b
-#cd ../../
-#cp 17g-build/17g*.deb chroot/tmp/17g.deb
-#chroot chroot dpkg -i tmp/17g.deb || true
-#chroot chroot apt-get install -f -y
-#rm -f chroot/tmp/17g.deb
+mkdir 17g-build && cd 17g-build 
+git clone https://gitlab.com/ggggggggggggggggg/17g && cd 17g
+mk-build-deps --install
+debuild -us -uc -b
+cd ../../
+cp 17g-build/17g*.deb chroot/tmp/17g.deb
+chroot chroot dpkg -i tmp/17g.deb || true
+chroot chroot apt-get install -f -y
+rm -f chroot/tmp/17g.deb
 
 #### liquorix kernel
 curl https://liquorix.net/liquorix-keyring.gpg | chroot chroot apt-key add -
@@ -123,7 +123,7 @@ mkdir -p debjaro/boot || true
 for dir in dev dev/pts proc sys ; do
     while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
 done
-mksquashfs chroot filesystem.squashfs -comp gzip -wildcards -e /dev /sys /proc
+mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
 mkdir -p debjaro/live || true
 ln -s live debjaro/casper || true
 mv filesystem.squashfs debjaro/live/filesystem.squashfs
