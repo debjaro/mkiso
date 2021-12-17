@@ -121,8 +121,9 @@ chroot chroot apt-get install network-manager-gnome pulseaudio xterm -y
 #### Run chroot shell
 #chroot chroot /bin/bash || true
 
-### Remove sudo and other bloat stuff (optional)
-chroot chroot apt purge sudo -yq
+### Remove sudo (optional)
+chroot chroot apt purge sudo -y
+chroot chroot apt autoremove -y
 
 #### Clear logs and history
 chroot chroot apt-get clean
