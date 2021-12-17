@@ -87,10 +87,12 @@ rm -f chroot/tmp/17g.deb
 curl https://liquorix.net/liquorix-keyring.gpg | chroot chroot apt-key add -
 echo "deb http://liquorix.net/debian testing main" > chroot/etc/apt/sources.list.d/liquorix.list
 chroot chroot apt-get update -y
-chroot chroot apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
+chroot chroot apt-get install linux-image-liquorix-amd64 -y
+#chroot chroot apt-get install linux-headers-liquorix-amd64 -y
 
 #### stock kernel 
-#chroot chroot apt-get install linux-image-amd64 linux-headers-amd64 -y
+#chroot chroot apt-get install linux-image-amd64 -y
+#chroot chroot apt-get install linux-headers-amd64 -y
 
 #### xorg & desktop pkgs
 chroot chroot apt-get install xserver-xorg xinit -y
@@ -114,10 +116,13 @@ chroot chroot apt-get install lxde-core -y
 chroot chroot apt-get install lightdm lightdm-gtk-greeter -y
 
 #### Usefull stuff
-chroot chroot apt-get install network-manager-gnome pavucontrol xterm -y
+chroot chroot apt-get install network-manager-gnome pulseaudio xterm -y
 
 #### Run chroot shell
 #chroot chroot /bin/bash || true
+
+### Remove sudo and other bloat stuff (optional)
+chroot chroot apt purge sudo -yq
 
 #### Clear logs and history
 chroot chroot apt-get clean
