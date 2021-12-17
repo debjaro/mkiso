@@ -64,6 +64,13 @@ APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
 
+#### Remove langage files after dpkg invoke (optional)
+cat > chroot/etc/apt/apt.conf.d/02antibloat << EOF
+DPkg::Post-Invoke {"rm -rf /usr/share/locale || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/man || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/help || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/doc || true";};
+EOF
 
 #### Install 17g (optional)
 mkdir 17g-build && cd 17g-build 
