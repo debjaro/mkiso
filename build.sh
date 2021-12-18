@@ -30,10 +30,10 @@ set -ex
 mkdir chroot || true
 
 #### For devuan
-debootstrap --no-check-gpg --no-merged-usr --exclude=usrmerge --arch=amd64 testing chroot https://pkgmaster.devuan.org/merged
+debootstrap --variant=minbase --no-check-gpg --no-merged-usr --exclude=usrmerge --arch=amd64 testing chroot https://pkgmaster.devuan.org/merged
 echo "deb https://pkgmaster.devuan.org/merged testing main contrib non-free" > chroot/etc/apt/sources.list
 ##### For debian
-#debootstrap --no-check-gpg --no-merged-usr --exclude=usrmerge --arch=amd64 testing chroot https://deb.debian.org/debian
+#debootstrap --variant=minbase --no-check-gpg --no-merged-usr --exclude=usrmerge --arch=amd64 testing chroot https://deb.debian.org/debian
 #echo "deb https://deb.debian.org/debian testing main contrib non-free" > chroot/etc/apt/sources.list
 
 #### Set root password
@@ -55,6 +55,7 @@ chroot chroot apt-get upgrade -y
 #### live-boot
 chroot chroot apt-get dist-upgrade -y
 chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
+
 #### For debian/devuan
 chroot chroot apt-get install live-config live-boot -y
 
@@ -64,12 +65,17 @@ APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
 
-#### Remove langage files after dpkg invoke (optional)
+# Set sh as bash inside of dash (optional)
+rm -f chroot/bin/sh
+ln -s bash chroot/bin/sh
+
+#### Remove bloat files after dpkg invoke (optional)
 cat > chroot/etc/apt/apt.conf.d/02antibloat << EOF
 DPkg::Post-Invoke {"rm -rf /usr/share/locale || true";};
 DPkg::Post-Invoke {"rm -rf /usr/share/man || true";};
 DPkg::Post-Invoke {"rm -rf /usr/share/help || true";};
 DPkg::Post-Invoke {"rm -rf /usr/share/doc || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/info || true";};
 EOF
 
 #### Install 17g (optional)
@@ -136,7 +142,11 @@ mkdir -p debjaro/boot || true
 for dir in dev dev/pts proc sys ; do
     while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
 done
+# For better installation time
 mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
+# For better compress ratio
+#mksquashfs chroot filesystem.squashfs -comp xz -wildcards
+
 mkdir -p debjaro/live || true
 ln -s live debjaro/casper || true
 mv filesystem.squashfs debjaro/live/filesystem.squashfs
