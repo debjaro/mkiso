@@ -131,6 +131,11 @@ chroot chroot apt-get install network-manager-gnome pulseaudio xterm -y
 chroot chroot apt purge sudo -y
 chroot chroot apt autoremove -y
 
+### UPX process for decrease binary sise (optional)
+chroot chroot apt install upx-ucl -y
+chroot chroot find /bin -type f | xargs chroot chroot upx-ucl || true
+chroot chroot find /usr -type f | xargs chroot chroot upx-ucl || true
+
 #### Clear logs and history
 chroot chroot apt-get clean
 rm -f chroot/root/.bash_history
