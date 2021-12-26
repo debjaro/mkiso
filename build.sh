@@ -21,8 +21,8 @@ export DEBIAN_FRONTEND=noninteractive
 if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]] ; then
     apt-get update
     apt-get install curl mtools squashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
-    # For 17g package build
-    apt-get install git devscripts equivs -y
+#    # For 17g package build
+#    apt-get install git devscripts equivs -y
 fi
 
 set -ex
@@ -52,11 +52,11 @@ curl https://debjaro.github.io/repo/stable/dists/stable/Release.key | chroot chr
 chroot chroot apt-get update -y
 chroot chroot apt-get upgrade -y
 
-#### live-boot
-chroot chroot apt-get dist-upgrade -y
-chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
+#### grub packages
+#chroot chroot apt-get dist-upgrade -y
+#chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 
-#### For debian/devuan
+#### live packages for debian/devuan
 chroot chroot apt-get install live-config live-boot -y
 
 #### Configure system
@@ -79,15 +79,15 @@ DPkg::Post-Invoke {"rm -rf /usr/share/info || true";};
 EOF
 
 #### Install 17g (optional)
-mkdir 17g-build && cd 17g-build 
-git clone https://gitlab.com/ggggggggggggggggg/17g && cd 17g
-mk-build-deps --install
-debuild -us -uc -b
-cd ../../
-cp 17g-build/17g*.deb chroot/tmp/17g.deb
-chroot chroot dpkg -i tmp/17g.deb || true
-chroot chroot apt-get install -f -y
-rm -f chroot/tmp/17g.deb
+#mkdir 17g-build && cd 17g-build 
+#git clone https://gitlab.com/ggggggggggggggggg/17g && cd 17g
+#mk-build-deps --install
+#debuild -us -uc -b
+#cd ../../
+#cp 17g-build/17g*.deb chroot/tmp/17g.deb
+#chroot chroot dpkg -i tmp/17g.deb || true
+#chroot chroot apt-get install -f -y
+#rm -f chroot/tmp/17g.deb
 
 #### liquorix kernel
 curl https://liquorix.net/liquorix-keyring.gpg | chroot chroot apt-key add -
@@ -119,7 +119,7 @@ chroot chroot apt-get install lxde-core -y
 #chroot chroot apt-get install kde-plasma-desktop kwin-x11 -y
 
 #### Install lightdm (for lxde and xfce only)
-chroot chroot apt-get install lightdm lightdm-gtk-greeter -y
+#chroot chroot apt-get install lightdm lightdm-gtk-greeter -y
 
 #### Usefull stuff
 chroot chroot apt-get install network-manager-gnome pulseaudio xterm -y
@@ -131,7 +131,7 @@ chroot chroot apt-get install network-manager-gnome pulseaudio xterm -y
 chroot chroot apt purge sudo -y
 chroot chroot apt autoremove -y
 
-### UPX process for decrease binary sise (optional)
+### UPX process for decrease binary size (optional)
 chroot chroot apt install upx-ucl -y
 chroot chroot find /bin -type f | xargs chroot chroot upx-ucl --ultra-brute &>/dev/null || true
 chroot chroot find /usr -type f | xargs chroot chroot upx-ucl --ultra-brute &>/dev/null || true
@@ -148,9 +148,9 @@ for dir in dev dev/pts proc sys ; do
     while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
 done
 # For better installation time
-mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
+#mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
 # For better compress ratio
-#mksquashfs chroot filesystem.squashfs -comp xz -wildcards
+mksquashfs chroot filesystem.squashfs -comp xz -wildcards
 
 mkdir -p debjaro/live || true
 ln -s live debjaro/casper || true
