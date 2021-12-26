@@ -133,8 +133,8 @@ chroot chroot apt autoremove -y
 
 ### UPX process for decrease binary sise (optional)
 chroot chroot apt install upx-ucl -y
-chroot chroot find /bin -type f | xargs chroot chroot upx-ucl || true
-chroot chroot find /usr -type f | xargs chroot chroot upx-ucl || true
+chroot chroot find /bin -type f | xargs chroot chroot upx-ucl --ultra-brute &>/dev/null || true
+chroot chroot find /usr -type f | xargs chroot chroot upx-ucl --ultra-brute &>/dev/null || true
 
 #### Clear logs and history
 chroot chroot apt-get clean
