@@ -122,7 +122,8 @@ chroot chroot apt-get install lxde-core -y
 #chroot chroot apt-get install lightdm lightdm-gtk-greeter -y
 
 #### Usefull stuff
-chroot chroot apt-get install network-manager-gnome pulseaudio xterm -y
+#chroot chroot apt-get install network-manager-gnome pulseaudio -y
+chroot chroot apt-get install xterm 
 
 #### Run chroot shell
 #chroot chroot /bin/bash || true
@@ -130,12 +131,6 @@ chroot chroot apt-get install network-manager-gnome pulseaudio xterm -y
 ### Remove sudo (optional)
 chroot chroot apt purge sudo -y
 chroot chroot apt autoremove -y
-
-### UPX process for decrease binary size (optional)
-chroot chroot apt install upx-ucl -y
-chroot chroot find /bin -type f | xargs chroot chroot upx-ucl || true
-chroot chroot find /usr/lib -type f | xargs chroot chroot upx-ucl || true
-chroot chroot find /usr/bin -type f | xargs chroot chroot upx-ucl || true
 
 #### Clear logs and history
 chroot chroot apt-get clean
