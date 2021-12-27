@@ -123,7 +123,7 @@ chroot chroot apt-get install lxde-core -y
 
 #### Usefull stuff
 #chroot chroot apt-get install network-manager-gnome pulseaudio -y
-chroot chroot apt-get install network-manager xterm 
+chroot chroot apt-get install network-manager xterm -y
 
 #### Run chroot shell
 #chroot chroot /bin/bash || true
