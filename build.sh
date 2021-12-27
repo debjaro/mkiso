@@ -46,6 +46,9 @@ echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 chroot chroot apt-get install gnupg -y
 
+##### Devuan only
+chroot chroot apt-get install devuan-keyring -y
+
 #### Debjaro repository (optional)
 echo "deb https://debjaro.github.io/repo/stable stable main" > chroot/etc/apt/sources.list.d/debjaro.list
 curl https://debjaro.github.io/repo/stable/dists/stable/Release.key | chroot chroot apt-key add -
@@ -107,7 +110,7 @@ chroot chroot apt-get install xserver-xorg xinit -y
 echo "deb https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master stable main" > chroot/etc/apt/sources.list.d/lxde-gtk3.list
 curl https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master/dists/stable/Release.key | chroot chroot apt-key add -
 chroot chroot apt-get update
-chroot chroot apt-get install lxde-core -y
+chroot chroot apt-get install lxde-core xdg-utils -y
 
 #### Install xfce
 #chroot chroot apt-get install xfce4 xfce4-goodies -y
