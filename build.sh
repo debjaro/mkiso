@@ -20,7 +20,7 @@ export DEBIAN_FRONTEND=noninteractive
 #### Install dependencies
 if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]] ; then
     apt-get update
-    apt-get install curl mtools squashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
+    apt-get install curl mtools squashfs-tools grub-pc-bin grub-efi xorriso debootstrap binutils -y
 #    # For 17g package build
 #    apt-get install git devscripts equivs -y
 fi
@@ -80,6 +80,7 @@ DPkg::Post-Invoke {"rm -rf /usr/share/man || true";};
 DPkg::Post-Invoke {"rm -rf /usr/share/help || true";};
 DPkg::Post-Invoke {"rm -rf /usr/share/doc || true";};
 DPkg::Post-Invoke {"rm -rf /usr/share/info || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/i18n || true";};
 EOF
 
 #### Install 17g (optional)
@@ -103,6 +104,10 @@ chroot chroot apt-get install linux-image-liquorix-amd64 -y
 #### stock kernel 
 #chroot chroot apt-get install linux-image-amd64 -y
 #chroot chroot apt-get install linux-headers-amd64 -y
+
+#### strip kernel modules (optional)
+find chroot/lib/modules/*/ -iname "*.ko" -exec strip --strip-unneeded {} \;
+chroot chroot update-initramfs -u -k all
 
 #### xorg & desktop pkgs
 chroot chroot apt-get install xserver-xorg xinit -y
@@ -148,6 +153,13 @@ rm -f chroot/root/.bash_history
 rm -rf chroot/var/lib/apt/lists/*
 find chroot/var/log/ -type f | xargs rm -f
 
+#### Copy kernel and initramfs (Debian/Devuan)
+cp -pf chroot/boot/initrd.img-* debjaro/boot/initrd.img
+cp -pf chroot/boot/vmlinuz-* debjaro/boot/vmlinuz
+
+#### Remove initrd.img for minimize iso size (optional)
+rm -rf chroot/boot/initrd.img-*
+
 #### Create squashfs
 mkdir -p debjaro/boot || true
 for dir in dev dev/pts proc sys ; do
@@ -161,10 +173,6 @@ mksquashfs chroot filesystem.squashfs -comp xz -wildcards
 mkdir -p debjaro/live || true
 ln -s live debjaro/casper || true
 mv filesystem.squashfs debjaro/live/filesystem.squashfs
-
-#### Copy kernel and initramfs (Debian/Devuan)
-cp -pf chroot/boot/initrd.img-* debjaro/boot/initrd.img
-cp -pf chroot/boot/vmlinuz-* debjaro/boot/vmlinuz
 
 #### Write grub.cfg
 mkdir -p debjaro/boot/grub/
