@@ -132,6 +132,12 @@ chroot chroot apt-get install network-manager xterm -y
 #### Run chroot shell
 #chroot chroot /bin/bash || true
 
+#### usbcore stuff (for initramfs)
+echo "#!/bin/sh" > chroot/etc/initramfs-tools/scripts/init-top/usbcore.sh
+echo "echo Y > /sys/module/usbcore/parameters/old_scheme_first" >> chroot/etc/initramfs-tools/scripts/init-top/usbcore.sh
+chmod +x chroot/etc/initramfs-tools/scripts/init-top/usbcore.sh
+chroot chroot update-initramfs -u -k all
+
 ### Remove sudo (optional)
 chroot chroot apt purge sudo -y
 chroot chroot apt autoremove -y
