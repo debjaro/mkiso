@@ -105,10 +105,6 @@ chroot chroot apt-get install linux-image-liquorix-amd64 -y
 #chroot chroot apt-get install linux-image-amd64 -y
 #chroot chroot apt-get install linux-headers-amd64 -y
 
-#### strip kernel modules (optional)
-find chroot/lib/modules/*/ -iname "*.ko" -exec strip --strip-unneeded {} \;
-chroot chroot update-initramfs -u -k all
-
 #### xorg & desktop pkgs
 chroot chroot apt-get install xserver-xorg xinit -y
 
