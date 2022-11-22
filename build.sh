@@ -110,7 +110,7 @@ chroot chroot apt-get install xserver-xorg xinit -y
 
 #### Install lxde-gtk3
 echo "deb https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master stable main" > chroot/etc/apt/sources.list.d/lxde-gtk3.list
-curl https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master/dists/stable/Release.key | chroot chroot apt-key add -
+curl https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master/dists/stable/Release.key | gpg --dearmor > chroot/etc/apt/trusted.gpg.d/lxde-gtk3.gpg
 chroot chroot apt-get update
 chroot chroot apt-get install lxde-core xdg-utils -y
 
