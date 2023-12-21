@@ -141,7 +141,7 @@ chroot chroot update-initramfs -u -k all
 
 ### Remove sudo (optional)
 chroot chroot apt purge sudo -y
-chroot chroot apt autoremove -y
+chroot chroot apt autoremove --purge -y
 
 #### Clear logs and history
 chroot chroot apt-get clean
